@@ -1,114 +1,69 @@
 # API Storage
 
-A modern web application for managing API service information, including endpoints, keys, and models.
+Uma aplicação para gerenciar e armazenar informações sobre APIs, incluindo serviços, chaves de API e modelos.
 
-![API Storage Screenshot](https://via.placeholder.com/800x450.png?text=API+Storage+Screenshot)
+## Características
 
-## Features
+- Gerenciamento de serviços de API
+- Armazenamento de chaves de API
+- Organização de modelos por serviço
+- Interface de usuário intuitiva
+- Pesquisa rápida de serviços e chaves
+- Banco de dados MySQL para armazenamento persistente
 
-- 🔐 Securely store API service details (endpoints, keys, models)
-- 🔍 Search and filter through your API services
-- 📋 Copy API information to clipboard with one click
-- 🌙 Modern dark mode interface
-- 💾 Local storage persistence
-- 📱 Responsive design for all devices
+## Tecnologias Utilizadas
 
-## Getting Started
+- **Frontend**: React, TypeScript, Tailwind CSS, Vite
+- **Backend**: Node.js, Express.js
+- **Banco de Dados**: MySQL
+- **Bibliotecas**: Axios, React Router, Lucide React
 
-### Prerequisites
+## Configuração do Projeto
 
-- [Node.js](https://nodejs.org/) (v16 or newer)
-- npm or yarn package manager
+### Pré-requisitos
 
-### Installation
+- Node.js (versão 14 ou superior)
+- MySQL Server
 
-1. Clone the repository or download the source code
+### Instalação
 
-```bash
-git clone https://github.com/yourusername/api-storage.git
-cd api-storage
-```
+1. Clone o repositório
+   ```
+   git clone https://github.com/drnit29/api-storage.git
+   cd api-storage
+   ```
 
-2. Install dependencies
+2. Instale as dependências
+   ```
+   npm install
+   ```
 
-```bash
-npm install
-# or
-yarn install
-```
+3. Configure o banco de dados MySQL
+   - Crie um banco de dados chamado `u313634068_api_storage`
+   - Configure as credenciais no arquivo `server/database.js`
 
-3. Start the development server
+4. Inicie o servidor e o cliente
+   ```
+   npm run dev
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Estrutura do Projeto
 
-4. Open your browser and navigate to `http://localhost:5173`
+- `/src` - Código fonte do frontend
+  - `/components` - Componentes React
+  - `/utils` - Funções utilitárias
+  - `/types` - Definições de tipos TypeScript
+- `/server` - Código fonte do backend
+  - `database.js` - Configuração do banco de dados
+  - `routes.js` - Rotas da API
+  - `index.js` - Ponto de entrada do servidor
 
-## Usage
+## Uso
 
-### Adding a New API Service
+1. Inicie a aplicação com `npm run dev`
+2. Acesse a interface web em `http://localhost:5173`
+3. Use a interface para gerenciar seus serviços de API e chaves
 
-1. Click the "Add Service" button in the top right corner
-2. Fill in the service details:
-   - Name: A descriptive name for the API service
-   - Base URL: The root endpoint for the API
-   - Models: Add one or more model identifiers
-   - API Keys: Add one or more named API keys
+## Licença
 
-### Managing Services
-
-- **Search**: Use the search bar to filter services by name, URL, model, or API key
-- **Edit**: Click the edit icon on any service to modify its details
-- **Delete**: Click the delete icon to remove a service
-- **Copy**: Use the copy buttons to quickly copy URLs, keys, or other information
-
-## Development
-
-### Tech Stack
-
-- **Frontend**: React, TypeScript, Tailwind CSS
-- **Build Tool**: Vite
-- **Icons**: Lucide React
-
-### Project Structure
-
-```
-api-storage/
-├── public/
-├── src/
-│   ├── components/     # React components
-│   ├── types/          # TypeScript type definitions
-│   ├── utils/          # Utility functions
-│   ├── App.tsx         # Main application component
-│   └── main.tsx        # Application entry point
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
-
-### Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-# or
-yarn build
-```
-
-The build artifacts will be stored in the `dist/` directory.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Lucide Icons](https://lucide.dev/)
+Este projeto está licenciado sob a licença MIT.

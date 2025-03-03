@@ -15,6 +15,7 @@ const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentService, setCurrentService] = useState<ApiService | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<{
     show: boolean;
     type: 'success' | 'error';
@@ -25,10 +26,26 @@ const App: React.FC = () => {
     message: '',
   });
 
+  // Função para carregar os serviços do banco de dados
+  const loadServices = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getServices();
+      setServices(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error loading services:', error);
+      showNotification('error', 'Failed to load services');
+      setIsLoading(false);
+    }
+  };
+
+  // Efeito para carregar serviços na inicialização
   useEffect(() => {
-    setServices(getServices());
+    loadServices();
   }, []);
 
+  // Efeito para filtrar serviços quando o termo de pesquisa ou a lista de serviços mudar
   useEffect(() => {
     if (searchTerm.trim() === '') {
       setFilteredServices(services);
@@ -60,24 +77,50 @@ const App: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeleteService = (id: string) => {
+  const handleDeleteService = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this service?')) {
-      deleteService(id);
-      setServices(getServices());
-      showNotification('success', 'Service deleted successfully');
+      try {
+        const success = await deleteService(id);
+        if (success) {
+          await loadServices(); // Recarregar a lista após a exclusão
+          showNotification('success', 'Service deleted successfully');
+        } else {
+          showNotification('error', 'Failed to delete service');
+        }
+      } catch (error) {
+        console.error('Error deleting service:', error);
+        showNotification('error', 'An error occurred while deleting the service');
+      }
     }
   };
 
-  const handleSubmitService = (service: ApiService) => {
-    if (currentService) {
-      updateService(service);
-      showNotification('success', 'Service updated successfully');
-    } else {
-      addService(service);
-      showNotification('success', 'Service added successfully');
+  const handleSubmitService = async (service: ApiService) => {
+    try {
+      if (currentService) {
+        // Atualizar serviço existente
+        const updatedService = await updateService(service);
+        if (updatedService) {
+          showNotification('success', 'Service updated successfully');
+        } else {
+          showNotification('error', 'Failed to update service');
+        }
+      } else {
+        // Adicionar novo serviço
+        const newService = await addService(service);
+        if (newService) {
+          showNotification('success', 'Service added successfully');
+        } else {
+          showNotification('error', 'Failed to add service');
+        }
+      }
+      
+      // Recarregar a lista após a adição/atualização
+      await loadServices();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Error submitting service:', error);
+      showNotification('error', 'An error occurred while saving the service');
     }
-    setServices(getServices());
-    setIsModalOpen(false);
   };
 
   const handleSearchChange = (value: string) => {
@@ -123,11 +166,17 @@ const App: React.FC = () => {
           />
         </div>
         
-        <ServiceTable 
-          services={filteredServices} 
-          onEdit={handleEditService} 
-          onDelete={handleDeleteService} 
-        />
+        {isLoading ? (
+          <div className="bg-gray-800 rounded-lg p-8 text-center">
+            <p className="text-gray-400 text-lg">Loading services...</p>
+          </div>
+        ) : (
+          <ServiceTable 
+            services={filteredServices} 
+            onEdit={handleEditService} 
+            onDelete={handleDeleteService} 
+          />
+        )}
       </main>
       
       <Modal 

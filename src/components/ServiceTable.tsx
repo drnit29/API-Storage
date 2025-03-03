@@ -64,7 +64,7 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ services, onEdit, onDelete 
               </td>
               <td className="px-4 py-3">
                 {service.models.length > 0 ? (
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-col space-y-1">
                     {service.models.map((model, index) => (
                       <div key={index} className="flex items-center bg-gray-700 px-2 py-1 rounded text-sm">
                         <span className="text-white">{model}</span>
